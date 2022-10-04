@@ -201,6 +201,10 @@ img, video, audio, iframe, table, form {
 }
 
 #previous {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    align-items: center;
     background-color: transparent;
     color: var(--tertiary-text-colour-dark);
     padding: 0.75rem 1rem;
@@ -209,6 +213,10 @@ img, video, audio, iframe, table, form {
 }
 
 #next {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    align-items: center;
     background-color: transparent;
     color: var(--tertiary-text-colour-dark);
     padding: 0.75rem 1rem;

@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="./styles/colour-styles.css">
     <link rel="stylesheet" href="./styles/mobile-first.css">
     <!-- Icons here -->
+    <script src="https://kit.fontawesome.com/3b618d9a27.js" crossorigin="anonymous"></script>
     <!-- Font family here -->
     <script defer src="./src/index.js"></script>
     <title>OpenSea Search</title>
@@ -24,7 +25,7 @@
         <!-- Filters -->
         <section id="filters-container">
             <input id="search-name" type="text" placeholder="Search a collection" name="search-name">
-            <button id="search">Go
+            <button id="search"><i class="fa-solid fa-magnifying-glass fa-lg"></i>
             </button>
             <select name="volume-filter" id="volume-filter" class="outline-none">
                 <option value="daily">Highest daily volume</option>
@@ -60,9 +61,9 @@
         <!-- End of cards -->
         <!-- Start of pagination -->
         <section id="pagination">
-            <button id="previous">Previous</button>
+            <button id="previous"><i class="fa-solid fa-circle-arrow-left"></i>Previous</button>
             <div id="current-page">1 out of 40</div>
-            <button id="next">Next</button>
+            <button id="next">Next <i class="fa-solid fa-circle-arrow-right"></i></button>
         </section>
         <!-- End of pagination -->
     </div>
