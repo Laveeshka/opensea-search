@@ -6,6 +6,7 @@
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
+    /* background-color: var(--body-background-colour-dark); */
 }
 
 /* scale all images, and media to accomodate responsive layout. */
@@ -23,6 +24,9 @@ img, video, audio, iframe, table, form {
   header {
     padding-top: 1rem;
     padding-bottom: 1rem;
+    overflow: hidden; /* clip content */
+    background-color: var(--nav-background-colour-dark);
+    border-bottom: var(--primary-border-colour-dark);
   }
 
   .logo {
@@ -34,7 +38,66 @@ img, video, audio, iframe, table, form {
     height: 2rem;
   }
 
+  .sticky {
+    position: fixed;
+    top: 0;
+    width: 100%;
+  }
+
+  .sticky + .wrapper-container {
+    padding-top: 6rem;
+  }
+
   /* Filters */
+  #filters-container {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    width: 100%;
+  }
+
+  #search {
+    height: 3.5rem;
+    width: 3.5rem;
+    border-radius: 0.5rem;
+    background-color: var(--input-background-colour-dark);
+    color: var(--button-icon-colour-dark);
+  }
+
+  #search-name {
+    height: 3.5rem;
+    flex-grow: 2; /* max */
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    background-color: var(--input-background-colour-dark);
+    color: var(--button-icon-colour-dark);
+  }
+
+  #volume-filter {
+    height: 3.5rem;
+    flex-grow: 1; /* max */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    gap: 1rem;
+    padding: 0.5rem 2.5rem 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    background-color: var(--input-background-colour-dark);
+    color: var(--button-icon-colour-dark);
+  }
+
+  .outline-none {
+    outline: 3px solid var(--input-background-colour-dark);
+    outline-offset: -1px;
+  }
+
+
+
 
   /* Card */
   #banner-img {
@@ -52,4 +115,16 @@ img, video, audio, iframe, table, form {
   .eth-logo {
     width: 1rem;
     height: 1rem;
+  }
+
+  #card {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    height: 100%;
+    overflow: hidden;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 1rem;
+    border: var(--primary-border-colour-thin-dark);
   }
