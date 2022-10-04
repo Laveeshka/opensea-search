@@ -1,0 +1,21 @@
+:root {
+    --primary-border-colour-dark: 2px solid #222528;
+    --primary-border-colour-thin-dark: 1px solid #222528;
+    --secondary-border-colour-dark: 2px solid #E5E7EB;
+    --tertiary-border-colour-dark: 2px solid #00FFA3;
+    --tertiary-border-colour-thin-dark: 1px solid #00FFA3;
+
+    --nav-background-colour-dark: rgba(31, 25, 25, 0.75);
+    --body-background-colour-dark: #1A1C1F;
+
+    --input-background-colour-dark: #222528;
+    --input-placeholder-text-colour-dark: #7C808B;
+    --input-icon-colour-dark: #7C808B;
+    
+    --button-icon-colour-dark: #FFFFFF;
+
+    --primary-text-colour-dark: #ffffff;
+    --secondary-text-colour-dark: #9CA3AF;
+    --tertiary-text-colour-dark: #00FFA3;
+}
+
