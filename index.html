@@ -13,7 +13,7 @@
 </head>
 <body>
     <!-- Start of header -->
-    <header id="header">
+    <header id="header" class="sticky">
         <div class="logo">
             <img src="./images/OpenSeaLogo.svg" alt="OpenSea logo">
         </div>
@@ -35,10 +35,11 @@
         <!-- End of filters -->
         <!-- Start of cards -->
         <section id="cards-container">
-            <div id="card">
+         
+            <div class="card">
                 <div class="image-container">
-                    <img id="banner-img" src="./images/collection-banner-placeholder.jpg" alt="collection banner image">
-                    <img id="collection-img" src="./images/collection-image-placeholder.jpg" alt="collection image">
+                    <img class="banner-img" src="./images/collection-banner-placeholder.jpg" alt="collection banner image">
+                    <img class="collection-img" src="./images/collection-image-placeholder.jpg" alt="collection image">
                 </div>
                 <div class="text-container">
                     <div class="left-container">
@@ -54,44 +55,7 @@
                     </div>
                 </div>
             </div>
-            <div id="card">
-                <div class="image-container">
-                    <img id="banner-img" src="./images/collection-banner-placeholder.jpg" alt="collection banner image">
-                    <img id="collection-img" src="./images/collection-image-placeholder.jpg" alt="collection image">
-                </div>
-                <div class="text-container">
-                    <div class="left-container">
-                        <div class="collection-name">Name</div>
-                        <div class="collection-items">Number of items</div>
-                    </div>
-                    <div class="right-container">
-                        <div class="total-volume">Total volume</div>
-                        <div class="volume-container">
-                            <img class="eth-logo" src="./images/eth-logo.svg" alt="Ethereum logo">
-                            <div class="volume-value">Volume value</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="card">
-                <div class="image-container">
-                    <img id="banner-img" src="./images/collection-banner-placeholder.jpg" alt="collection banner image">
-                    <img id="collection-img" src="./images/collection-image-placeholder.jpg" alt="collection image">
-                </div>
-                <div class="text-container">
-                    <div class="left-container">
-                        <div class="collection-name">Name</div>
-                        <div class="collection-items">Number of items</div>
-                    </div>
-                    <div class="right-container">
-                        <div class="total-volume">Total volume</div>
-                        <div class="volume-container">
-                            <img class="eth-logo" src="./images/eth-logo.svg" alt="Ethereum logo">
-                            <div class="volume-value">Volume value</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
         </section>
         <!-- End of cards -->
         <section id="pagination">
