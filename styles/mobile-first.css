@@ -198,6 +198,7 @@ img, video, audio, iframe, table, form {
     flex-grow: 1;
     text-align: center;
     color: var(--primary-text-colour-dark);
+    font-size: 0.9rem;
 }
 
 #previous {
