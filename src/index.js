@@ -2,9 +2,11 @@
 const options = {method: 'GET', headers: {accept: 'application/json'}};
 let limit = 50;
 let page = 0;
+let collection_slug = 'doodles-official';
 let collectionsBaseUrl = `https://api.opensea.io/api/v1/collections?limit=${limit}&offset=${page*limit}`;
-
-let cardsContainer = document.getElementById("cards-container");
+let collectionUrl = `https://api.opensea.io/api/v1/collection/${collection_slug}`;
+const cardsContainer = document.getElementById("cards-container");
+let previousBtn = document.getElementById("previous");
 
 
 
@@ -26,14 +28,8 @@ function getNFTCollections(){
             console.log(colsData);
             const colsDataArray = colsData.collections;
             console.log(`first collection name: ${colsDataArray[0].name}`);
-            // const colsDataWithImage = colsDataArray.filter(colData => colData.banner_image_url !== null && colData.image_url !== null) 
-            // console.log(colsDataWithImage);
             cardsContainer.innerHTML = '';
-            colsDataArray.forEach(colData => 
-                {
-                    renderCollection(colData);
-                }
-                );
+            colsDataArray.forEach(colData => renderCollection(colData));
         })
         .catch(err => console.error(err))
 }
@@ -112,6 +108,10 @@ function nextPage(){
     let pageText = document.getElementById("current-page");
     nextBtn.addEventListener("click", () => {
         page++;
+
+        if (page > 0)
+            previousBtn.disabled = false;
+
         console.log(`page after next: ${page}`);
         pageText.textContent = `${page+1}`;
         getNFTCollections();
@@ -119,17 +119,19 @@ function nextPage(){
 }
 
 function previousPage(){
-    let previousBtn = document.getElementById("previous");
     let pageText = document.getElementById("current-page");
 
     previousBtn.addEventListener("click", () => {
-        page--;
-        console.log(`page after previous: ${page}`);
-        if (page >= 0){
+        if (page > 0){
+            page--;
+            previousBtn.disabled = false;
             pageText.textContent = `${page+1}`;
             getNFTCollections();
-
         }
+        else {
+            previousBtn.disabled = true;
+        }
+        console.log(`page after previous: ${page}`);
     })
 }
 
