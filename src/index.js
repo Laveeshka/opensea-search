@@ -26,12 +26,12 @@ function getNFTCollections(){
             console.log(colsData);
             const colsDataArray = colsData.collections;
             console.log(`first collection name: ${colsDataArray[0].name}`);
-            const colsDataWithImage = colsDataArray.filter(colData => colData.banner_image_url !== null && colData.image_url !== null) 
-            console.log(colsDataWithImage);
+            // const colsDataWithImage = colsDataArray.filter(colData => colData.banner_image_url !== null && colData.image_url !== null) 
+            // console.log(colsDataWithImage);
             cardsContainer.innerHTML = '';
-            colsDataWithImage.forEach(colDataWithImage => 
+            colsDataArray.forEach(colData => 
                 {
-                    renderCollection(colDataWithImage);
+                    renderCollection(colData);
                 }
                 );
         })
@@ -74,9 +74,12 @@ let volumeValue = document.createElement("div");
 volumeValue.classList.add("volume-value");
 
     //build image container
-    bannerImg.src = col.banner_image_url;
+    bannerImg.src = col.banner_image_url === null? "./images/banner_image_default.jpg" : col.banner_image_url;
+    //bannerImg.src = col.banner_image_url;
     bannerImg.alt = "banner image";
-    collectionImg.src = col.image_url;
+    collectionImg.src = col.image_url === null? "./images/image_default.jpg" : col.image_url;
+
+    //collectionImg.src = col.image_url;
     collectionImg.alt = "collection image";
     imageContainer.append(bannerImg, collectionImg);
 
