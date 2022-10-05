@@ -27,6 +27,7 @@ img, video, audio, iframe, table, form {
     overflow: hidden; /* clip content */
     background-color: var(--nav-background-colour-dark);
     border-bottom: var(--primary-border-colour-dark);
+    z-index: 10;
   }
 
   .logo {

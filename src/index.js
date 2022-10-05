@@ -1,9 +1,10 @@
 //declare and initialise global variables here
+const options = {method: 'GET', headers: {accept: 'application/json'}};
 let limit = 50;
 let page = 0;
-let collectionsBaseUrl = `https://api.opensea.io/api/v1/collections?offset=${page}&limit=${limit}`;
+let collectionsBaseUrl = `https://api.opensea.io/api/v1/collections?limit=${limit}&offset=${page*limit}`;
 
-const cardsContainer = document.getElementById("cards-container");
+let cardsContainer = document.getElementById("cards-container");
 
 
 
@@ -11,24 +12,25 @@ init(); //hoisting
 
 function init(){
     getNFTCollections();
-    
+    nextPage();
+    previousPage();
 }
 
 //fetch all
 function getNFTCollections(){
-    fetch(collectionsBaseUrl)
+    console.log(`page is: ${page}`);
+    fetch(`https://api.opensea.io/api/v1/collections?limit=${limit}&offset=${page*limit}`, options)
         .then(res => res.json())
         .then(colsData => {
+            console.log(`url is: ${collectionsBaseUrl}`)
             console.log(colsData);
-            //console.log(colsData.collections);
             const colsDataArray = colsData.collections;
-            //console.log(Array.from(colsData)); // empty array
-            //console.log(colsDataArr);
+            console.log(`first collection name: ${colsDataArray[0].name}`);
             const colsDataWithImage = colsDataArray.filter(colData => colData.banner_image_url !== null && colData.image_url !== null) 
             console.log(colsDataWithImage);
+            cardsContainer.innerHTML = '';
             colsDataWithImage.forEach(colDataWithImage => 
                 {
-                    console.log("hey");
                     renderCollection(colDataWithImage);
                 }
                 );
@@ -38,7 +40,7 @@ function getNFTCollections(){
         
 
 function renderCollection(col){
-    let card = document.createElement("div");
+let card = document.createElement("div");
 card.classList.add("card");
 
 let imageContainer = document.createElement("div");
@@ -101,6 +103,33 @@ volumeValue.classList.add("volume-value");
     cardsContainer.append(card);
 
 }
+
+function nextPage(){
+    const nextBtn = document.getElementById("next");
+    let pageText = document.getElementById("current-page");
+    nextBtn.addEventListener("click", () => {
+        page++;
+        console.log(`page after next: ${page}`);
+        pageText.textContent = `${page+1}`;
+        getNFTCollections();
+    })
+}
+
+function previousPage(){
+    let previousBtn = document.getElementById("previous");
+    let pageText = document.getElementById("current-page");
+
+    previousBtn.addEventListener("click", () => {
+        page--;
+        console.log(`page after previous: ${page}`);
+        if (page >= 0){
+            pageText.textContent = `${page+1}`;
+            getNFTCollections();
+
+        }
+    })
+}
+
 //park sorting for now
 // const sortedData = Array.from(collectionsData).sort((a, b) =>
 //              b.stats.one_day_volume - a.stats.one_day_volume
