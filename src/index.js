@@ -107,8 +107,16 @@ function searchCollectionHander(event){
 
     fetch(`https://api.opensea.io/api/v1/collection/${collection_slug}`, options)
         .then(res => res.json())
-        .then(colObj => renderSingleCollection(colObj.collection))
-        .catch(err => console.log(err));
+        .then(colObj => {
+            console.log(`colObj with a non-existing collection slug: ${colObj.collection}`);
+            if (colObj.collection !== undefined)
+                renderSingleCollection(colObj.collection);
+            else
+                renderEmptyState();
+        })
+        .catch(err => {
+            console.log(err);
+        });
 }
 
 function renderSingleCollection(col){
@@ -119,13 +127,13 @@ function renderSingleCollection(col){
     //build html elements for collection details
     singleCollectionContainer.innerHTML = `        
     <div class="image-container">
-    <img class="banner-img" src=${banner_image_url === null? "./images/banner_image_default.jpg" : banner_image_url} alt="collection banner image">
+    <img class="banner-img-single" src=${banner_image_url === null? "./images/banner_image_default.jpg" : banner_image_url} alt="collection banner image">
     <img class="collection-img" src=${image_url === null? "./images/image_default.jpg" : image_url} alt="collection image">
 </div>
-<div class="text-container wrapper-container">
+<div class="text-container-single wrapper-container">
     <h2 class="collection-name">${name}</h2>
-    <a href=${external_url} target="_blank">Go to collection</a>
-    <p class="description">${description}</p>
+    <a class="link" href=${external_url === null? "https://opensea.io/" : external_url} target="_blank">Go to collection</a>
+    <p class="description">${description === null? "This collection does not have a description" : description}</p>
     <div class="stats-container">
         <div class="stats">
             <div class="collection-items">Items</div>
@@ -135,19 +143,23 @@ function renderSingleCollection(col){
             <div class="total-volume">Total volume</div>
             <div class="volume-container">
                 <img class="eth-logo" src="./images/eth-logo.svg" alt="Ethereum logo">
-                <div class="volume-value">${total_volume}</div>
+                <div class="volume-value">${total_volume === null ? "-" : parseInt(total_volume)}</div>
             </div>
         </div>
         <div class="stats">
             <div class="floor-price">Floor price</div>
             <div class="floor-container">
                 <img class="eth-logo" src="./images/eth-logo.svg" alt="Ethereum logo">
-                <div class="floor-value">${floor_price}</div>
+                <div class="floor-value">${floor_price === null ? "-" : parseInt(floor_price)}</div>
             </div>
         </div>
     </div>
 </div>
 `
+}
+
+function renderEmptyState(){
+    singleCollectionContainer.innerHTML = `<h2 class="wrapper-container collection-name">This collection does not exist!</h2>`
 }
 
 //park sorting for now
