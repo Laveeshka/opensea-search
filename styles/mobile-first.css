@@ -215,6 +215,11 @@ img, video, audio, iframe, table, form {
     border: var(--tertiary-border-colour-thin-dark);
 }
 
+#previous:disabled {
+  color: var(--secondary-text-colour-dark);
+  border: var(--secondary-border-colour-dark);
+}
+
 #next {
     display: flex;
     gap: 0.5rem;
