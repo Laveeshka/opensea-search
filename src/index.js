@@ -95,11 +95,16 @@ function previousPage(){
 }
 
 function searchACollection(){
+    //console.log(searchBtn.innerHTML);
     searchBtn.addEventListener("click", searchCollectionHander);
 }
 
 function searchCollectionHander(event){
-    //hide cards and pagination
+    if (searchBtn.innerHTML === `<i class="fa-solid fa-xmark fa-lg"></i>`){
+        restoreCollectionsList()
+    }
+    else {
+         //hide cards and pagination
     cardsContainer.style.display = 'none';
     paginationSection.style.display = 'none';
 
@@ -117,6 +122,10 @@ function searchCollectionHander(event){
         .catch(err => {
             console.log(err);
         });
+
+    }
+   
+    
 }
 
 function renderSingleCollection(col){
@@ -156,10 +165,26 @@ function renderSingleCollection(col){
     </div>
 </div>
 `
+searchBtn.innerHTML = `<i class="fa-solid fa-xmark fa-lg"></i>`;
 }
 
 function renderEmptyState(){
-    singleCollectionContainer.innerHTML = `<h2 class="wrapper-container collection-name">This collection does not exist!</h2>`
+    singleCollectionContainer.innerHTML = `<h2 class="wrapper-container collection-name">This collection does not exist!</h2>`;
+    searchBtn.innerHTML = `<i class="fa-solid fa-xmark fa-lg"></i>`;
+}
+
+function restoreCollectionsList(event){
+    searchBtn.innerHTML = `<i class="fa-solid fa-magnifying-glass fa-lg"></i>`;
+     //unhide cards and pagination
+     cardsContainer.style.display = 'grid';
+     paginationSection.style.display = 'flex';
+
+     //empty single collection details
+     singleCollectionContainer.innerHTML = '';
+
+     //clear input field
+     searchInput.value = '';
+
 }
 
 //park sorting for now
