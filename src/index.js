@@ -11,11 +11,14 @@ const searchBtn = document.getElementById("search");
 const searchInput = document.getElementById("search-name");
 const singleCollectionContainer = document.getElementById("single-collection-container");
 const paginationSection = document.getElementById("pagination");
+const dropdown = document.getElementById("volume-filter");
+let colsDataArray;
 
 init(); //hoisting
 
 function init(){
     getNFTCollections();
+    sortCollections();
     nextPage();
     previousPage();
     searchACollection();
@@ -29,12 +32,37 @@ function getNFTCollections(){
         .then(colsData => {
             console.log(`url is: ${collectionsBaseUrl}`)
             console.log(colsData);
-            const colsDataArray = colsData.collections;
-            console.log(`first collection name: ${colsDataArray[0].name}`);
+            colsDataArray = colsData.collections;
+            console.log(`first collection name before sorting: ${colsDataArray[0].name}`);
             cardsContainer.innerHTML = '';
+            
+            //as usual below
             colsDataArray.forEach(colData => renderCollection(colData));
         })
         .catch(err => console.error(err))
+}
+
+function sortCollections(){
+    //listen to change event here
+    dropdown.addEventListener("change", e => {
+        if (e.target.value === "name-ascending"){
+            colsDataArray.sort((a, b) => a.name.localeCompare(b.name));
+            console.log(colsDataArray);
+            cardsContainer.innerHTML = '';
+            colsDataArray.forEach(colData => renderCollection(colData));
+
+        }
+        else if (e.target.value === "name-descending"){
+            colsDataArray.sort((a, b) => b.name.localeCompare(a.name));
+            console.log(colsDataArray);
+            cardsContainer.innerHTML = '';
+            colsDataArray.forEach(colData => renderCollection(colData));
+
+        }
+        else if (e.target.value === "default"){
+            getNFTCollections();
+        }
+    });
 }
         
 
@@ -188,5 +216,3 @@ function restoreCollectionsList(event){
 }
 
 //park sorting for now
-// const sortedData = Array.from(collectionsData).sort((a, b) =>
-//              b.stats.one_day_volume - a.stats.one_day_volume
