@@ -3,8 +3,6 @@ const options = {method: 'GET', headers: {accept: 'application/json'}};
 let limit = 50;
 let page = 0;
 let collection_slug = '';
-let collectionsBaseUrl = `https://api.opensea.io/api/v1/collections?limit=${limit}&offset=${page*limit}`;
-let collectionUrl = `https://api.opensea.io/api/v1/collection/${collection_slug}`;
 const cardsContainer = document.getElementById("cards-container");
 let previousBtn = document.getElementById("previous");
 const searchBtn = document.getElementById("search");
@@ -30,7 +28,6 @@ function getNFTCollections(){
     fetch(`https://api.opensea.io/api/v1/collections?limit=${limit}&offset=${page*limit}`, options)
         .then(res => res.json())
         .then(colsData => {
-            console.log(`url is: ${collectionsBaseUrl}`)
             console.log(colsData);
             colsDataArray = colsData.collections;
             console.log(`first collection name before sorting: ${colsDataArray[0].name}`);
@@ -38,6 +35,8 @@ function getNFTCollections(){
             
             //as usual below
             colsDataArray.forEach(colData => renderCollection(colData));
+            if (page < 1)
+                previousBtn.disabled = true;
         })
         .catch(err => console.error(err))
 }
@@ -214,5 +213,3 @@ function restoreCollectionsList(event){
      searchInput.value = '';
 
 }
-
-//park sorting for now
