@@ -167,7 +167,8 @@ function renderSingleCollection(col){
     <img class="collection-img" src=${image_url === null? "./images/image_default.jpg" : image_url} alt="collection image">
 </div>
 <div class="text-container-single wrapper-container">
-    <h2 class="collection-name">${name}</h2>
+    <h2 class="collection-name">${name}  <span class="favourite-span"><i class="fa-regular fa-heart"></i>
+    </span></h2>
     <a class="link" href=${external_url === null? "https://opensea.io/" : external_url} target="_blank">Go to collection</a>
     <p class="description">${description === null? "This collection does not have a description" : description}</p>
     <div class="stats-container">
@@ -193,6 +194,15 @@ function renderSingleCollection(col){
 </div>
 `
 searchBtn.innerHTML = `<i class="fa-solid fa-xmark fa-lg"></i>`;
+
+//listen to click event on heart icon
+let favouriteSpan = document.querySelector(".favourite-span");
+favouriteSpan.addEventListener("click", (e) => {
+    console.log("heart was clicked!");
+    console.log(e.target); //<i class="fa-regular fa-heart"></i>
+
+    addFavouriteCollectionToDb(col);
+});
 }
 
 function renderEmptyState(){
@@ -213,3 +223,26 @@ function restoreCollectionsList(event){
      searchInput.value = '';
 
 }
+
+function addFavouriteCollectionToDb(col){
+    const {banner_image_url, slug, name, image_url, description, external_url} = col;
+    const favCol = {
+        slug,
+        name,
+        banner_image_url: banner_image_url === null? "./images/banner_image_default.jpg" : banner_image_url,
+        image_url: image_url === null? "./images/image_default.jpg" : image_url,
+        description: description === null? "This collection does not have a description" : description,
+        external_url: external_url === null? "https://opensea.io/" : external_url
+    }
+    fetch('http://localhost:3000/collections', {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        body: JSON.stringify(favCol)
+    })
+        .then(res => res.json())
+        .then(data => console.log(data))
+}
+
