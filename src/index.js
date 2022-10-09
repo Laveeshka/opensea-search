@@ -9,7 +9,7 @@ const searchBtn = document.getElementById("search");
 const searchInput = document.getElementById("search-name");
 const singleCollectionContainer = document.getElementById("single-collection-container");
 const paginationSection = document.getElementById("pagination");
-const dropdown = document.getElementById("volume-filter");
+const dropdown = document.getElementById("name-filter");
 let colsDataArray;
 
 init(); //hoisting
