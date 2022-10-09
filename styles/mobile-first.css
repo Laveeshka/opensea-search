@@ -53,6 +53,7 @@ img, video, audio, iframe, table, form {
     margin-bottom: 1rem;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     flex-wrap: wrap;
     gap: 1rem;
     width: 100%;
@@ -97,6 +98,51 @@ img, video, audio, iframe, table, form {
 
   #name-filter:focus-visible {
     border: var(--tertiary-border-colour-thin-dark);
+  }
+
+  .switch {
+    position: relative;
+    width: 6rem;
+    height: 2.5rem;
+  }
+
+  /* toggle switch shape */
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--input-background-colour-dark);
+    transition: 0.4s ease;
+    border-radius: 2rem;
+  }
+
+  /* hide the checkbox */
+  .switch input {
+    display: none;
+  }
+
+  /* switch inner circle */
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 1.6rem;
+    width: 1.6rem;
+    left: 0.25rem;
+    bottom: 0.4rem;
+    background-color: var(--primary-text-colour-dark);
+    transition: 0.4s ease;
+    border-radius: 1.6rem;
+  }
+
+  input:checked + .slider {
+    background-color: var(--tertiary-text-colour-dark);
+  }
+
+  input:checked + .slider:before {
+    transform: translateX(3.8rem);
   }
 
   /* .outline-none {
