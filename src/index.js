@@ -10,6 +10,7 @@ const searchInput = document.getElementById("search-name");
 const singleCollectionContainer = document.getElementById("single-collection-container");
 const paginationSection = document.getElementById("pagination");
 const dropdown = document.getElementById("name-filter");
+const favouriteCollectionContainer = document.getElementById("favourite-collections-container");
 let colsDataArray;
 let favCols;
 
@@ -136,7 +137,7 @@ function searchCollectionHander(event){
         restoreCollectionsList()
     }
     else {
-         //hide cards and pagination
+    //hide cards and pagination
     cardsContainer.style.display = 'none';
     paginationSection.style.display = 'none';
 
@@ -322,9 +323,34 @@ function showFavouriteCollections(){
     inputCheckbox.addEventListener('change', (e) => {
         if (e.target.checked){
             console.log("checked!");
+            //hide cards and pagination
+            cardsContainer.style.display = 'none';
+            paginationSection.style.display = 'none';
+            singleCollectionContainer.style.display = 'none';
+
+            //render favourite collections
+            favCols.forEach(favCol => renderFavouriteCollection(favCol));
         }
         else {
             console.log("not checked!");
+            //unhide cards and pagination
+            cardsContainer.style.display = 'grid';
+            paginationSection.style.display = 'flex';
+            singleCollectionContainer.style.display = 'block';
+            favouriteCollectionContainer.innerHTML = '';
         }
     })
+}
+
+function renderFavouriteCollection(favCol){
+    const {banner_image_url, image_url, description, name, external_url} = favCol;
+    favouriteCollectionContainer.innerHTML += `
+    <div class="image-container">
+    <img class="banner-img-single" src=${banner_image_url} alt="collection banner image">
+    <img class="collection-img" src=${image_url} alt="collection image">
+</div>
+<div class="text-container-single wrapper-container">
+    <h2 class="collection-name">${name}</h2>
+    <a class="link" href=${external_url} target="_blank">Go to collection</a>
+    <p class="description">${description}</p>`
 }

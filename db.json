@@ -1,22 +1,13 @@
 {
   "collections": [
     {
-      "id": 1,
-      "slug": "whatever",
-      "name": "hmm",
-      "banner_image_url": "",
-      "image_url": "",
-      "description": "",
-      "external_url": ""
-    },
-    {
       "slug": "dragons",
       "name": "Dragons",
       "banner_image_url": "https://i.seadn.io/gae/ESq36qxTLiug_KkQqnZVjumV2EVApTTdsov62H1LvzTg9oULd47Ds_0LcalkkW7s7gI7an4awV4ySfEbgQpYqxFQ4g9nK4tJ46JPnQ?w=500&auto=format",
       "image_url": "https://i.seadn.io/gae/I29oSidBpeYY3LgENGDRs7weWKdoL96i5lQs92RNDHJDs3YXeHViuLsfoBjYIgKVz0s0729PIHFukQgci2WbxkTAdOeEgMSFx5zGQw?w=500&auto=format",
       "description": "33 Dragons 🐲 13 Named / 20 Numbered  🐉 When the day comes that the winds show their true power, Ichabod shall bring forth a new fury. 🔥",
       "external_url": "https://opensea.io/collection/dragons",
-      "id": 2
+      "id": 1
     },
     {
       "slug": "giant-flower-installations",
@@ -25,7 +16,16 @@
       "image_url": "https://i.seadn.io/gcs/files/a7886583d59b91a5f433d69522425c89.png?w=500&auto=format",
       "description": "",
       "external_url": "https://opensea.io/",
-      "id": 4
+      "id": 2
+    },
+    {
+      "slug": "hello-world",
+      "name": "Hello World",
+      "banner_image_url": "./images/banner_image_default.jpg",
+      "image_url": "https://i.seadn.io/gae/36Kys81NRzOHhJ4qkv6H2pUnC-yxXKeqSKx1AlWB4CcnJX-50Xu44A73Cn1hWcduMZXuGq0TL-v-kxCae_6ede8QFIuJV88wltEszA?w=500&auto=format",
+      "description": "Test market",
+      "external_url": "https://opensea.io/",
+      "id": 3
     }
   ]
 }

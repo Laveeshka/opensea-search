@@ -348,6 +348,13 @@ div.stats > .floor-price {
   color: var(--secondary-text-colour-dark);
 }
 
+/* Favourite collections */
+#favourite-collections-container {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 1rem;
+}
+
 /* MEDIA QUERIES */
 
 /* MIN-WIDTH 768px */
