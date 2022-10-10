@@ -11,15 +11,20 @@ const singleCollectionContainer = document.getElementById("single-collection-con
 const paginationSection = document.getElementById("pagination");
 const dropdown = document.getElementById("name-filter");
 let colsDataArray;
+let favCols;
 
 init(); //hoisting
 
 function init(){
+    //do not post if collection already exists in db
+    getFavouriteCollectionsFromDb();
+
     getNFTCollections();
     sortCollections();
     nextPage();
     previousPage();
     searchACollection();
+    showFavouriteCollections();
 }
 
 //fetch all
@@ -195,13 +200,32 @@ function renderSingleCollection(col){
 `
 searchBtn.innerHTML = `<i class="fa-solid fa-xmark fa-lg"></i>`;
 
+
 //listen to click event on heart icon
 let favouriteSpan = document.querySelector(".favourite-span");
 favouriteSpan.addEventListener("click", (e) => {
+    getFavouriteCollectionsFromDb();
+
     console.log("heart was clicked!");
     console.log(e.target); //<i class="fa-regular fa-heart"></i>
+    let heartIcon = document.querySelector(".fa-heart");
+    console.log(heartIcon);
 
-    addFavouriteCollectionToDb(col);
+
+    //change to solid heart from regular heart
+    if (heartIcon.classList.contains("fa-regular")){
+        heartIcon.classList.remove("fa-regular");
+        heartIcon.classList.add("fa-solid");
+
+        addFavouriteCollectionToDb(col);
+    }
+    else if (heartIcon.classList.contains("fa-solid")){
+        heartIcon.classList.remove("fa-solid");
+        heartIcon.classList.add("fa-regular");
+
+        deleteFavouriteCollectionFromDb(col);
+    }
+
 });
 }
 
@@ -226,7 +250,15 @@ function restoreCollectionsList(event){
 
 function addFavouriteCollectionToDb(col){
     const {banner_image_url, slug, name, image_url, description, external_url} = col;
-    const favCol = {
+
+    console.log(`favCols are: ${favCols}`)
+    //perform check using Array.prototype.some()
+    const doesColExist = favCols.some(col => col.slug === slug);
+    console.log(doesColExist);
+
+    //ONLY post collection to db if it does not exist in db
+    if (doesColExist !== true){
+        const favCol = {
         slug,
         name,
         banner_image_url: banner_image_url === null? "./images/banner_image_default.jpg" : banner_image_url,
@@ -244,5 +276,55 @@ function addFavouriteCollectionToDb(col){
     })
         .then(res => res.json())
         .then(data => console.log(data))
+    }
+    
+    getFavouriteCollectionsFromDb();
 }
 
+
+function deleteFavouriteCollectionFromDb(col){
+
+    //retrieve the id of collection to be deleted
+    const {slug} = col;
+    const colToBeDeleted = favCols.find(col => col.slug === slug);
+    console.log(colToBeDeleted.id);
+
+    deleteCollection(colToBeDeleted.id);
+}
+
+function deleteCollection(id){
+    fetch(` http://localhost:3000/collections/${id}`, {
+        method: 'DELETE',
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+        .then(res => res.json())
+        .then(data => console.log(data))
+
+    getFavouriteCollectionsFromDb();
+
+}
+
+//GET all the favourites from db
+function getFavouriteCollectionsFromDb(){
+    fetch('http://localhost:3000/collections')
+        .then(res => res.json())
+        .then(data => {
+            favCols = data;
+            console.log(favCols); //works
+        })
+
+}
+
+function showFavouriteCollections(){
+    const inputCheckbox = document.getElementById("saved");
+    inputCheckbox.addEventListener('change', (e) => {
+        if (e.target.checked){
+            console.log("checked!");
+        }
+        else {
+            console.log("not checked!");
+        }
+    })
+}
