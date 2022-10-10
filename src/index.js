@@ -137,6 +137,7 @@ function searchCollectionHander(event){
         restoreCollectionsList()
     }
     else {
+    getFavouriteCollectionsFromDb();
     //hide cards and pagination
     cardsContainer.style.display = 'none';
     paginationSection.style.display = 'none';
@@ -156,14 +157,12 @@ function searchCollectionHander(event){
             console.log(err);
         });
 
-    }
-   
-    
+    }   
 }
 
 function renderSingleCollection(col){
     //console.log(col);
-    const {banner_image_url, name, image_url, description, external_url, stats: {floor_price, count, total_volume}} = col;
+    const {banner_image_url, name, slug, image_url, description, external_url, stats: {floor_price, count, total_volume}} = col;
     console.log(banner_image_url, name, image_url, description, external_url, floor_price, count, total_volume);
 
     //build html elements for collection details
@@ -201,6 +200,13 @@ function renderSingleCollection(col){
 `
 searchBtn.innerHTML = `<i class="fa-solid fa-xmark fa-lg"></i>`;
 
+//new code
+let heartIcon = document.querySelector(".fa-heart");
+const doesColExist = favCols.some(col => col.slug === slug);
+if (doesColExist){
+    heartIcon.classList.remove("fa-regular");
+    heartIcon.classList.add("fa-solid");
+}
 
 //listen to click event on heart icon
 let favouriteSpan = document.querySelector(".favourite-span");
@@ -209,7 +215,6 @@ favouriteSpan.addEventListener("click", (e) => {
 
     console.log("heart was clicked!");
     console.log(e.target); //<i class="fa-regular fa-heart"></i>
-    let heartIcon = document.querySelector(".fa-heart");
     console.log(heartIcon);
 
 

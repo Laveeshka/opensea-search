@@ -100,6 +100,17 @@ img, video, audio, iframe, table, form {
     border: var(--tertiary-border-colour-thin-dark);
   }
 
+  #toggle-switch-container {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  #toggle-switch-container p {
+    color: var(--primary-text-colour-dark);
+  }
+
   .switch {
     position: relative;
     width: 6rem;
