@@ -157,11 +157,6 @@ img, video, audio, iframe, table, form {
     transform: translateX(3.8rem);
   }
 
-  /* .outline-none {
-    outline: 3px solid var(--input-background-colour-dark);
-    outline-offset: -1px;
-  } */
-
 
 /* Cards container */
 
@@ -188,7 +183,7 @@ img, video, audio, iframe, table, form {
 
   .image-container {
     position: relative;
-    flex: 1 1 0%; /* max */
+    /* flex: 1 1 0%;  */
   }
 
   .banner-img {

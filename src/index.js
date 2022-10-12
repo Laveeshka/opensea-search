@@ -1,5 +1,5 @@
 //declare and initialise global variables here
-const options = {method: 'GET', headers: {accept: 'application/json'}};
+const options = { method: 'GET', headers: { accept: 'application/json' } };
 let limit = 50;
 let page = 0;
 let collection_slug = '';
@@ -16,8 +16,7 @@ let favCols;
 
 init(); //hoisting
 
-function init(){
-    //do not post if collection already exists in db
+function init() {
     getFavouriteCollectionsFromDb();
 
     getNFTCollections();
@@ -28,18 +27,24 @@ function init(){
     showFavouriteCollections();
 }
 
+//show modal
+cardsContainer.addEventListener("click", (e) => {
+    console.log(e.target.dataset.id);
+    fetch(`https://api.opensea.io/api/v1/collection/${e.target.dataset.id}`, options)
+        .then(res => res.json())
+        .then(data => {
+         console.log(data)
+        })
+})
+
 //fetch all
-function getNFTCollections(){
-    console.log(`page is: ${page}`);
-    fetch(`https://api.opensea.io/api/v1/collections?limit=${limit}&offset=${page*limit}`, options)
+function getNFTCollections() {
+    fetch(`https://api.opensea.io/api/v1/collections?limit=${limit}&offset=${page * limit}`, options)
         .then(res => res.json())
         .then(colsData => {
-            console.log(colsData);
             colsDataArray = colsData.collections;
-            console.log(`first collection name before sorting: ${colsDataArray[0].name}`);
             cardsContainer.innerHTML = '';
-            
-            //as usual below
+
             colsDataArray.forEach(colData => renderCollection(colData));
             if (page < 1)
                 previousBtn.disabled = true;
@@ -47,47 +52,45 @@ function getNFTCollections(){
         .catch(err => console.error(err))
 }
 
-function sortCollections(){
+function sortCollections() {
     //listen to change event here
     dropdown.addEventListener("change", e => {
-        if (e.target.value === "name-ascending"){
+        if (e.target.value === "name-ascending") {
             colsDataArray.sort((a, b) => a.name.localeCompare(b.name));
-            console.log(colsDataArray);
             cardsContainer.innerHTML = '';
             colsDataArray.forEach(colData => renderCollection(colData));
 
         }
-        else if (e.target.value === "name-descending"){
+        else if (e.target.value === "name-descending") {
             colsDataArray.sort((a, b) => b.name.localeCompare(a.name));
-            console.log(colsDataArray);
             cardsContainer.innerHTML = '';
             colsDataArray.forEach(colData => renderCollection(colData));
 
         }
-        else if (e.target.value === "default"){
+        else if (e.target.value === "default") {
             getNFTCollections();
         }
     });
 }
-        
 
-function renderCollection(col){
+
+function renderCollection(col) {
     cardsContainer.innerHTML += `
-        <div class="card">
-                <div class="image-container">
-                    <img class="banner-img" src=${col.banner_image_url === null? "./images/banner_image_default.jpg" : col.banner_image_url} alt="collection banner image">
-                    <img class="collection-img" src=${col.image_url === null? "./images/image_default.jpg" : col.image_url} alt="collection image">
+        <div class="card" data-id="${col.slug}">
+                <div class="image-container" data-id="${col.slug}">
+                    <img data-id="${col.slug}" class="banner-img" src=${col.banner_image_url === null ? "./images/banner_image_default.jpg" : col.banner_image_url} alt="collection banner image">
+                    <img data-id="${col.slug}" class="collection-img" src=${col.image_url === null ? "./images/image_default.jpg" : col.image_url} alt="collection image">
                 </div>
-                <div class="text-container">
-                    <div class="left-container">
-                        <div class="collection-name">${col.name}</div>
-                        <div class="collection-items">${col.stats.count} items</div>
+                <div class="text-container" data-id="${col.slug}">
+                    <div class="left-container" data-id="${col.slug}">
+                        <div class="collection-name"  data-id="${col.slug}">${col.name}</div>
+                        <div class="collection-items" data-id="${col.slug}">${col.stats.count} items</div>
                     </div>
-                    <div class="right-container">
-                        <div class="total-volume">Total volume</div>
-                        <div class="volume-container">
-                            <img class="eth-logo" src="./images/eth-logo.svg" alt="Ethereum logo">
-                            <div class="volume-value">${col.stats.total_volume}</div>
+                    <div class="right-container" data-id="${col.slug}">
+                        <div class="total-volume" data-id="${col.slug}">Total volume</div>
+                        <div class="volume-container" data-id="${col.slug}">
+                            <img data-id="${col.slug}" class="eth-logo" src="./images/eth-logo.svg" alt="Ethereum logo">
+                            <div data-id="${col.slug}" class="volume-value">${col.stats.total_volume}</div>
                         </div>
                     </div>
                 </div>
@@ -95,7 +98,7 @@ function renderCollection(col){
     `
 }
 
-function nextPage(){
+function nextPage() {
     const nextBtn = document.getElementById("next");
     let pageText = document.getElementById("current-page");
     nextBtn.addEventListener("click", () => {
@@ -104,78 +107,72 @@ function nextPage(){
         if (page > 0)
             previousBtn.disabled = false;
 
-        console.log(`page after next: ${page}`);
-        pageText.textContent = `${page+1}`;
+        pageText.textContent = `${page + 1}`;
         getNFTCollections();
     })
 }
 
-function previousPage(){
+function previousPage() {
     let pageText = document.getElementById("current-page");
 
     previousBtn.addEventListener("click", () => {
-        if (page > 0){
+        if (page > 0) {
             page--;
             previousBtn.disabled = false;
-            pageText.textContent = `${page+1}`;
+            pageText.textContent = `${page + 1}`;
             getNFTCollections();
         }
         else {
             previousBtn.disabled = true;
         }
-        console.log(`page after previous: ${page}`);
     })
 }
 
-function searchACollection(){
-    //console.log(searchBtn.innerHTML);
+function searchACollection() {
     searchBtn.addEventListener("click", searchCollectionHander);
 }
 
-function searchCollectionHander(event){
-    if (searchBtn.innerHTML === `<i class="fa-solid fa-xmark fa-lg"></i>`){
+function searchCollectionHander(event) {
+    if (searchBtn.innerHTML === `<i class="fa-solid fa-xmark fa-lg"></i>`) {
         restoreCollectionsList()
     }
     else {
-    getFavouriteCollectionsFromDb();
-    //hide cards and pagination
-    cardsContainer.style.display = 'none';
-    paginationSection.style.display = 'none';
+        getFavouriteCollectionsFromDb();
+        //hide cards and pagination
+        cardsContainer.style.display = 'none';
+        paginationSection.style.display = 'none';
 
-    collection_slug = searchInput.value;
+        collection_slug = searchInput.value;
 
-    fetch(`https://api.opensea.io/api/v1/collection/${collection_slug}`, options)
-        .then(res => res.json())
-        .then(colObj => {
-            console.log(`colObj with a non-existing collection slug: ${colObj.collection}`);
-            if (colObj.collection !== undefined)
-                renderSingleCollection(colObj.collection);
-            else
-                renderEmptyState();
-        })
-        .catch(err => {
-            console.log(err);
-        });
+        fetch(`https://api.opensea.io/api/v1/collection/${collection_slug}`, options)
+            .then(res => res.json())
+            .then(colObj => {
+                if (colObj.collection !== undefined)
+                    renderSingleCollection(colObj.collection);
+                else
+                    renderEmptyState();
+            })
+            .catch(err => {
+                console.log(err);
+            });
 
-    }   
+    }
 }
 
-function renderSingleCollection(col){
-    //console.log(col);
-    const {banner_image_url, name, slug, image_url, description, external_url, stats: {floor_price, count, total_volume}} = col;
-    console.log(banner_image_url, name, image_url, description, external_url, floor_price, count, total_volume);
+function renderSingleCollection(col) {
+    const { banner_image_url, name, slug, image_url, description, external_url, stats: { floor_price, count, total_volume } } = col;
 
-    //build html elements for collection details
+    //build html element for collection details
     singleCollectionContainer.innerHTML = `        
     <div class="image-container">
-    <img class="banner-img-single" src=${banner_image_url === null? "./images/banner_image_default.jpg" : banner_image_url} alt="collection banner image">
-    <img class="collection-img" src=${image_url === null? "./images/image_default.jpg" : image_url} alt="collection image">
+    <img class="banner-img-single" src=${banner_image_url === null ? "./images/banner_image_default.jpg" : banner_image_url} alt="collection banner image">
+    <img class="collection-img" src=${image_url === null ? "./images/image_default.jpg" : image_url} alt="collection image">
 </div>
 <div class="text-container-single wrapper-container">
     <h2 class="collection-name">${name}  <span class="favourite-span"><i class="fa-regular fa-heart"></i>
     </span></h2>
-    <a class="link" href=${external_url === null? "https://opensea.io/" : external_url} target="_blank">Go to collection</a>
-    <p class="description">${description === null? "This collection does not have a description" : description}</p>
+    <a class="link" href=${external_url === null ? "https://opensea.io/" : external_url} target="_blank">Go to collection</a>
+    <p class="description">${description === null ? "This collection does not have a description" : description}</p>
     <div class="stats-container">
         <div class="stats">
             <div class="collection-items">Items</div>
@@ -198,107 +195,94 @@ function renderSingleCollection(col){
     </div>
 </div>
 `
-searchBtn.innerHTML = `<i class="fa-solid fa-xmark fa-lg"></i>`;
+    searchBtn.innerHTML = `<i class="fa-solid fa-xmark fa-lg"></i>`;
 
-//new code
-let heartIcon = document.querySelector(".fa-heart");
-const doesColExist = favCols.some(col => col.slug === slug);
-if (doesColExist){
-    heartIcon.classList.remove("fa-regular");
-    heartIcon.classList.add("fa-solid");
-}
-
-//listen to click event on heart icon
-let favouriteSpan = document.querySelector(".favourite-span");
-favouriteSpan.addEventListener("click", (e) => {
-    getFavouriteCollectionsFromDb();
-
-    console.log("heart was clicked!");
-    console.log(e.target); //<i class="fa-regular fa-heart"></i>
-    console.log(heartIcon);
-
-
-    //change to solid heart from regular heart
-    if (heartIcon.classList.contains("fa-regular")){
+    //check if searched collection exists in db
+    let heartIcon = document.querySelector(".fa-heart");
+    const doesColExist = favCols.some(col => col.slug === slug);
+    if (doesColExist) {
         heartIcon.classList.remove("fa-regular");
         heartIcon.classList.add("fa-solid");
-
-        addFavouriteCollectionToDb(col);
-    }
-    else if (heartIcon.classList.contains("fa-solid")){
-        heartIcon.classList.remove("fa-solid");
-        heartIcon.classList.add("fa-regular");
-
-        deleteFavouriteCollectionFromDb(col);
     }
 
-});
+    //listen to click event on heart icon
+    let favouriteSpan = document.querySelector(".favourite-span");
+    favouriteSpan.addEventListener("click", (e) => {
+        getFavouriteCollectionsFromDb();
+
+        //change to solid heart from regular heart
+        if (heartIcon.classList.contains("fa-regular")) {
+            heartIcon.classList.remove("fa-regular");
+            heartIcon.classList.add("fa-solid");
+
+            addFavouriteCollectionToDb(col);
+        }
+        else if (heartIcon.classList.contains("fa-solid")) {
+            heartIcon.classList.remove("fa-solid");
+            heartIcon.classList.add("fa-regular");
+
+            deleteFavouriteCollectionFromDb(col);
+        }
+
+    });
 }
 
-function renderEmptyState(){
+function renderEmptyState() {
     singleCollectionContainer.innerHTML = `<h2 class="wrapper-container collection-name">This collection does not exist!</h2>`;
     searchBtn.innerHTML = `<i class="fa-solid fa-xmark fa-lg"></i>`;
 }
 
-function restoreCollectionsList(event){
+function restoreCollectionsList(event) {
     searchBtn.innerHTML = `<i class="fa-solid fa-magnifying-glass fa-lg"></i>`;
-     //unhide cards and pagination
-     cardsContainer.style.display = 'grid';
-     paginationSection.style.display = 'flex';
+    //unhide cards and pagination
+    cardsContainer.style.display = 'grid';
+    paginationSection.style.display = 'flex';
 
-     //empty single collection details
-     singleCollectionContainer.innerHTML = '';
+    //empty single collection details
+    singleCollectionContainer.innerHTML = '';
 
-     //clear input field
-     searchInput.value = '';
+    //clear input field
+    searchInput.value = '';
 
 }
 
-function addFavouriteCollectionToDb(col){
-    const {banner_image_url, slug, name, image_url, description, external_url} = col;
-
-    console.log(`favCols are: ${favCols}`)
-    //perform check using Array.prototype.some()
+function addFavouriteCollectionToDb(col) {
+    const { banner_image_url, slug, name, image_url, description, external_url } = col;
     const doesColExist = favCols.some(col => col.slug === slug);
-    console.log(doesColExist);
 
     //ONLY post collection to db if it does not exist in db
-    if (doesColExist !== true){
+    if (doesColExist !== true) {
         const favCol = {
-        slug,
-        name,
-        banner_image_url: banner_image_url === null? "./images/banner_image_default.jpg" : banner_image_url,
-        image_url: image_url === null? "./images/image_default.jpg" : image_url,
-        description: description === null? "This collection does not have a description" : description,
-        external_url: external_url === null? "https://opensea.io/" : external_url
+            slug,
+            name,
+            banner_image_url: banner_image_url === null ? "./images/banner_image_default.jpg" : banner_image_url,
+            image_url: image_url === null ? "./images/image_default.jpg" : image_url,
+            description: description === null ? "This collection does not have a description" : description,
+            external_url: external_url === null ? "https://opensea.io/" : external_url
+        }
+        fetch('http://localhost:3000/collections', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            body: JSON.stringify(favCol)
+        })
+            .then(res => res.json())
+            .then(data => console.log(data))
     }
-    fetch('http://localhost:3000/collections', {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json"
-        },
-        body: JSON.stringify(favCol)
-    })
-        .then(res => res.json())
-        .then(data => console.log(data))
-    }
-    
+
     getFavouriteCollectionsFromDb();
 }
 
 
-function deleteFavouriteCollectionFromDb(col){
-
-    //retrieve the id of collection to be deleted
-    const {slug} = col;
+function deleteFavouriteCollectionFromDb(col) {
+    const { slug } = col;
     const colToBeDeleted = favCols.find(col => col.slug === slug);
-    console.log(colToBeDeleted.id);
-
     deleteCollection(colToBeDeleted.id);
 }
 
-function deleteCollection(id){
+function deleteCollection(id) {
     fetch(` http://localhost:3000/collections/${id}`, {
         method: 'DELETE',
         headers: {
@@ -313,21 +297,20 @@ function deleteCollection(id){
 }
 
 //GET all the favourites from db
-function getFavouriteCollectionsFromDb(){
+function getFavouriteCollectionsFromDb() {
     fetch('http://localhost:3000/collections')
         .then(res => res.json())
         .then(data => {
             favCols = data;
-            console.log(favCols); //works
+            console.log(favCols); 
         })
 
 }
 
-function showFavouriteCollections(){
+function showFavouriteCollections() {
     const inputCheckbox = document.getElementById("saved");
     inputCheckbox.addEventListener('change', (e) => {
-        if (e.target.checked){
-            console.log("checked!");
+        if (e.target.checked) {
             //hide cards and pagination
             cardsContainer.style.display = 'none';
             paginationSection.style.display = 'none';
@@ -337,7 +320,6 @@ function showFavouriteCollections(){
             favCols.forEach(favCol => renderFavouriteCollection(favCol));
         }
         else {
-            console.log("not checked!");
             //unhide cards and pagination
             cardsContainer.style.display = 'grid';
             paginationSection.style.display = 'flex';
@@ -347,8 +329,8 @@ function showFavouriteCollections(){
     })
 }
 
-function renderFavouriteCollection(favCol){
-    const {banner_image_url, image_url, description, name, external_url} = favCol;
+function renderFavouriteCollection(favCol) {
+    const { banner_image_url, image_url, description, name, external_url } = favCol;
     favouriteCollectionContainer.innerHTML += `
     <div class="image-container">
     <img class="banner-img-single" src=${banner_image_url} alt="collection banner image">
