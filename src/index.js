@@ -11,31 +11,48 @@ const singleCollectionContainer = document.getElementById("single-collection-con
 const paginationSection = document.getElementById("pagination");
 const dropdown = document.getElementById("name-filter");
 const favouriteCollectionContainer = document.getElementById("favourite-collections-container");
+const modal = document.querySelector('dialog#modal');
 let colsDataArray;
 let favCols;
-
 init(); //hoisting
 
 function init() {
     getFavouriteCollectionsFromDb();
-
     getNFTCollections();
     sortCollections();
     nextPage();
     previousPage();
     searchACollection();
     showFavouriteCollections();
+    showCollectionDescription();
 }
 
-//show modal
-cardsContainer.addEventListener("click", (e) => {
-    console.log(e.target.dataset.id);
-    fetch(`https://api.opensea.io/api/v1/collection/${e.target.dataset.id}`, options)
-        .then(res => res.json())
-        .then(data => {
-         console.log(data)
-        })
-})
+function showCollectionDescription(){
+    cardsContainer.addEventListener("click", (e) => {
+        console.log(e.target.dataset.id);
+        fetch(`https://api.opensea.io/api/v1/collection/${e.target.dataset.id}`, options)
+            .then(res => res.json())
+            .then(data => {
+             console.log(data);
+             toggleModal(data.collection);
+            })
+    })
+}
+
+function toggleModal(data){
+    const closeModal = document.querySelector('.close-button');
+
+    const h2 = modal.querySelector("h2");
+    h2.innerHTML = data.name;
+    const p = modal.querySelector("p");
+    p.innerHTML = data.description? data.description: "This collection does not have a description";
+    //open modal
+    modal.showModal();
+
+    closeModal.addEventListener('click', () => {
+        modal.close();
+    })
+}
 
 //fetch all
 function getNFTCollections() {
